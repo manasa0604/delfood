@@ -1,1 +1,1 @@
-echo"depolyment success"
+echo "depolyment success"
