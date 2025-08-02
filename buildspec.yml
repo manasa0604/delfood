@@ -2,14 +2,17 @@ version: 0.2
 
 env:
   variables:
-    AWS_REGION: us-east-1  # Change if you're using a different region
+    AWS_REGION: us-east-1
+    AWS_ACCOUNT_ID: 044519418214
+    REPOSITORY_NAME: delfood
 
 phases:
   pre_build:
     commands:
       - echo Logging in to Amazon ECR...
-      - $(aws ecr get-login-password --region $us-east-1 | docker login --username AWS --password-stdin $044519418214.dkr.ecr.$us-east-1.amazonaws.com)
-      - REPOSITORY_URI=$044519418214.dkr.ecr.$us-east-1.amazonaws.com/delfood
+      - aws --version
+      - $(aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com)
+      - REPOSITORY_URI=$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$REPOSITORY_NAME
       - IMAGE_TAG=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
   build:
     commands:
@@ -18,7 +21,7 @@ phases:
       - docker tag $REPOSITORY_URI:$IMAGE_TAG $REPOSITORY_URI:latest
   post_build:
     commands:
-      - echo Pushing the Docker image...
+      - echo Pushing the Docker image to ECR...
       - docker push $REPOSITORY_URI:$IMAGE_TAG
       - docker push $REPOSITORY_URI:latest
 
