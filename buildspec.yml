@@ -3,7 +3,7 @@ version: 0.2
 env:
   variables:
     AWS_REGION: ap-south-1
-    REPOSITORY_URI:949629621486.dkr.ecr.ap-south-1.amazonaws.com/delfood-reg
+    REPOSITORY_URI: 949629621486.dkr.ecr.ap-south-1.amazonaws.com/delfood-reg
 phases:
   pre_build:
     commands:
